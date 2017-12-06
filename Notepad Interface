@@ -1,0 +1,275 @@
+#include <stdio.h>
+#include <time.h>
+#include <windows.h>
+#include "FunsForText.h"
+
+#define N 69                                             //用户名长度
+
+void main_menu()                                         //主菜单界面
+{
+    if(access("content",0))                              //初始化检查文件缺失
+        system("md content");
+    FILE *fp = NULL;
+    if(access("content\\header.dat",0))
+        fp = fopen("content\\header.dat","wb");
+    if(access("content\\notes.dat",0))
+        fp = fopen("content\\notes.dat","wb");
+    if(access("content\\bin.dat",0))
+    fp = fopen("content\\bin.dat","wb");
+    if(access("content\\user_config.dat",0))
+    {
+        fp = fopen("content\\user_config.dat","wb");
+        fputs("color 07",fp);
+    }
+    fclose(fp);
+
+    fp = fopen("content\\user_config.dat","rb");   //读取颜色
+    if(fp==NULL){failReboot();}
+
+    system("cls");
+    char color[8];
+    fgets(color,20,fp);
+    system(color);
+    fclose(fp);
+
+    fp = fopen("content\\bin.dat","rb");               //检查可用笔记条数
+    char a = '\0';
+    int t = 0;
+    while(!feof(fp))
+    {
+        a = fgetc(fp);
+        if(a=='\n')
+            t++;
+    }
+    fclose(fp);
+
+    showContent("content\\header.dat");                  //显示大标题
+    printf("Main Menu\n\n");
+    printf("1------------Check your notes\n");           //查看笔记
+    printf("2------------Settings\n");                   //设置
+    printf("3------------Bin(%d)\n",t);
+    printf("0------------Exit\n");                       //退出
+
+    fp = fopen("content\\notes.dat","rb");               //检查可用笔记条数
+    a = '\0';
+    t = 0;
+    while(!feof(fp))
+    {
+        a = fgetc(fp);
+        if(a=='\n')
+            t++;
+    }
+    fclose(fp);
+    printf("\nNotes Available:%d",t);
+
+    char userName[N] = {0};                             //获取计算机用户名
+    unsigned long tooLong = sizeof(userName);
+    GetUserName(userName, &tooLong);
+
+    char c;
+    choose:
+    c = getch();
+    switch(c)
+    {
+        case '1':notes();break;                         //查看笔记
+        case '2':settings();break;                      //设置
+        case '3':bin();break;
+        case '0':break;                                 //退出
+        default:goto choose;
+    }
+        if(tooLong>=N)
+            printf("\n\nWhy is your name so long?\n");      //名字很长
+        else
+            printf("\n\nGoodbye, %s.\n",userName);          //一般告别
+    getch();
+    exit(0);
+}
+
+void notes()                                            //显示笔记
+{
+    FILE *fp = NULL;
+    fp = fopen("content\\notes.dat","rb");
+    if(fp==NULL){failReboot();}
+    system("cls");
+    showContent("content\\header.dat");
+
+    if(fgetc(fp) == EOF)                                //无内容显示 *空*
+        printf("*Empty*\n");
+
+    fclose(fp);
+    showContent("content\\notes.dat");
+    printf("\n");
+    printf("1------------Add Note\n");                  //添加
+    printf("2------------Delete Note\n");               //按行删除
+    printf("3------------Clear all notes\n");           //清除
+    printf("0------------Back\n");                      //返回
+
+    char c;
+    choose:
+    c = getch();
+    switch(c)
+    {
+        case '1':addContent("content\\notes.dat");break;    //添加
+        case '2':removeLine("content\\notes.dat");break;    //按行删除
+        case '3':clearContent("content\\notes.dat");break;  //清除
+        case '0':main_menu();break;                         //返回
+        default:goto choose;
+    }
+}
+
+void settings()                                             //设置菜单
+{
+    system("cls");
+    showContent("content\\header.dat");
+
+    printf("Settings\n\n");
+    printf("1------------Header\n");                        //设置大标题
+    printf("2------------Color\n");                         //设置颜色
+    printf("0------------Back\n");                          //返回
+
+    char c;
+    choose:
+    c = getch();
+    switch(c)
+    {
+        case '1':header();break;                            //设置大标题
+        case '2':changeColor();break;                       //设置颜色
+        case '0':main_menu();break;                         //主菜单
+        default:goto choose;
+    }
+}
+
+void header()                                               //设置大标题
+{
+    system("cls");
+    showContent("content\\header.dat");
+
+    printf("Header Settings\n\n");
+    printf("1------------Add Header\n");                    //添加
+    printf("2------------Delete Header\n");                 //按行删除
+    printf("3------------Clear Header\n");                  //清除
+    printf("0------------Back\n");                          //返回设置菜单
+
+    char c;
+    choose:
+    c = getch();
+    switch(c)
+    {
+        case '1':addContent("content\\header.dat");break;   //增加
+        case '2':removeLine("content\\header.dat");break;   //按行删除
+        case '3':clearContent("content\\header.dat");break; //清除
+        case '0':settings();break;                          //返回设置菜单
+        default:goto choose;
+    }
+}
+
+void changeColor()                                          //设置背景&文本颜色(命令行color指令)
+{
+    FILE *fp = NULL;
+    fp = fopen("content\\user_config.dat","rb");
+    if(fp==NULL){failReboot();}
+        system("cls");
+    showContent("content\\header.dat");
+
+    char color[20];
+    printf("*Background color != Text Color*.\n\n");
+    printf("0 = Black            8 = Grey\n");
+    printf("1 = Blue             9 = Light Blue\n");
+    printf("2 = Green            A = Light Green\n");
+    printf("3 = Faint Green      B = Light Faint Green\n");
+    printf("4 = Red              C = Light Red\n");
+    printf("5 = Purple           D = Light Purple\n");
+    printf("6 = Yellow           E = Light Yellow\n");
+    printf("7 = White            F = Light White\n\n");
+    printf("Background ");
+
+    char text,bg;
+    int add;
+    text = getch();
+
+    input_First:
+    if(((text>='0'&&text<='9')||(text>='a'&&text<='f')||(text>='A'&&text<='F')))    //背景颜色
+        add = sprintf(color,"color %c",text);
+    else
+        goto input_First;
+
+    printf(": %c\nText ",text);
+
+    input_Second:
+    bg = getch();
+    if(((bg>='0'&&bg<='9')||(bg>='a'&&bg<='f')||(bg>='A'&&bg<='F'))&&bg != text)    //文本颜色(不能与前者相同)
+        add += sprintf(color+add,"%c",bg);
+    else
+        goto input_Second;
+    printf(": %c\n\n",bg);
+    system(color);                                                                  //展示结果
+    printf("Is that ok?(Y/N)");                                                     //是否要改变成选定的颜色
+    char c;
+    yes_or_no:
+    c = getch();
+    switch(c)
+    {
+        case 'y':
+        case 'Y':break;
+        case 'n':
+        case 'N':goto end;break;
+        default:goto yes_or_no;
+    }
+    fp = fopen("content\\user_config.dat","wb");                                    //覆盖原设置
+    fputs(color,fp);
+    fclose(fp);
+    end:
+    fp = fopen("content\\user_config.dat","rb");                                    //再次读取设置内容
+    if(fp==NULL){failReboot();}
+    fgets(color,20,fp);
+    system(color);
+    fclose(fp);
+    settings();
+}
+
+void bin()                                              //垃圾箱
+{
+    system("cls");
+    showContent("content\\header.dat");
+
+    FILE *fp = NULL;
+    fp = fopen("content\\bin.dat","rb");
+    if(fp==NULL){failReboot();}
+
+    if(fgetc(fp) == EOF)                                //无内容显示 *空*
+    {
+        printf("*Empty*\n");
+    }
+    showContent("content\\bin.dat");
+    printf("\n");
+    printf("1------------Recover note\n");
+    printf("2------------Clear\n");
+    printf("0------------Back\n");
+
+    char c;
+    choose:
+    c = getch();
+    switch(c)
+    {
+        case '1':removeLine("content\\bin.dat");break;
+        case '2':clearContent("content\\bin.dat");break;
+        case '0':break;
+        default:goto choose;
+    }
+    main_menu();
+}
+
+void failReboot()                                        //读取失败重新初始化
+{
+    printf("Failed to read file, rebooting...");
+    delay(300);
+    main_menu();
+}
+
+int main(void)
+{
+    system("title 1337");                                                           //窗口标题
+    main_menu();
+
+    return 0;
+}
