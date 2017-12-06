@@ -149,8 +149,8 @@ void removeLine(char route[])                               //按行删除
         }
     fclose(fp);
     fclose(fp2);
-    remove("content\\temp.dat");                            //删除临时文件
     }
+    remove("content\\temp.dat");                            //删除临时文件
     if(route == "content\\notes.dat")
     {
         notes();
