@@ -1,4 +1,5 @@
 #define L 1337
+#include <time.h>
 
 void showContent(char route[])                           //显示指定目录内文本文件内容
 {
@@ -38,11 +39,6 @@ void addContent(char route[])                           //为指定文本文件�
     }
     fprintf(fp,"%s\n",cont);
     fclose(fp);
-
-    if(route == "content\\notes.dat")                  //转到各自菜单
-        notes();
-    else
-        header();
 }
 
 void removeLine(char route[])                               //按行删除
@@ -126,7 +122,7 @@ void removeLine(char route[])                               //按行删除
 
         if(a=='\n')
             search++;
-    }
+        }
         fclose(fp);
         fclose(fp2);
         fclose(fp3);
@@ -147,21 +143,10 @@ void removeLine(char route[])                               //按行删除
             if(b != EOF)
                 fputc(b,fp);
         }
-    fclose(fp);
-    fclose(fp2);
-    }
+        fclose(fp);
+        fclose(fp2);
+        }
     remove("content\\temp.dat");                            //删除临时文件
-    if(route == "content\\notes.dat")
-    {
-        notes();
-    }
-    else
-    {
-        if(route == "content\\header.dat")
-        header();
-        else
-        bin();
-    }
 }
 
 void clearContent(char route[])                             //清空
@@ -196,15 +181,13 @@ void clearContent(char route[])                             //清空
         default:goto choose;
     }
     fclose(fp);
-    if(route == "content\\notes.dat")
-        notes();
-    else
-    {
-        if(route == "content\\header.dat")
-        header();
-        else
-        bin();
-    }
+}
+
+void failReboot()                                        //读取失败重新初始化
+{
+    printf("Failed to read file, rebooting...");
+    delay(300);
+    main_menu();
 }
 
 void delay(int T)                                        //延时
