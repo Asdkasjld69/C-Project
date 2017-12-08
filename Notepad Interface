@@ -115,6 +115,7 @@ void notes()                                            //显示笔记
         case '0':main_menu();break;                         //返回
         default:goto choose;
     }
+    notes();
 }
 
 void settings()                                             //设置菜单
@@ -161,6 +162,7 @@ void header()                                               //设置大标题
         case '0':settings();break;                          //返回设置菜单
         default:goto choose;
     }
+    header();
 }
 
 void changeColor()                                          //设置背景&文本颜色(命令行color指令)
@@ -253,22 +255,18 @@ void bin()                                              //垃圾箱
     {
         case '1':removeLine("content\\bin.dat");break;
         case '2':clearContent("content\\bin.dat");break;
-        case '0':break;
+        case '0':main_menu();break;
         default:goto choose;
     }
-    main_menu();
-}
-
-void failReboot()                                        //读取失败重新初始化
-{
-    printf("Failed to read file, rebooting...");
-    delay(300);
-    main_menu();
+    bin();
 }
 
 int main(void)
 {
     system("title 1337");                                                           //窗口标题
+    if(!access("content\\temp.dat",0))
+    remove("content\\temp.dat");
+
     main_menu();
 
     return 0;
