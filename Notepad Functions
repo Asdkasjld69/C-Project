@@ -187,7 +187,7 @@ void failReboot()                                        //读取失败重新初
 {
     printf("Failed to read file, rebooting...");
     delay(300);
-    main_menu();
+    main_menu();//Write where you want it back next.
 }
 
 void delay(int T)                                        //延时
