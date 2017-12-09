@@ -35,7 +35,7 @@ void addContent(char route[])                           //为指定文本文件�
         struct tm *lt;
         time (&t);
         lt = localtime (&t);
-        fprintf(fp,"=%d.%02d.%02d_%02d:%02d:%02d=:",lt->tm_year+1900,lt->tm_mon,lt->tm_mday,lt->tm_hour,lt->tm_min,lt->tm_sec);
+        fprintf(fp,"=%d.%02d.%02d_%02d:%02d:%02d=:",lt->tm_year+1900,lt->tm_mon+1,lt->tm_mday,lt->tm_hour,lt->tm_min,lt->tm_sec);
     }
     fprintf(fp,"%s\n",cont);
     fclose(fp);
