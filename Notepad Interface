@@ -263,7 +263,7 @@ void bin()                                              //垃圾箱
 
 int main(void)
 {
-    system("title 1337");                                                           //窗口标题
+    system("title Simple Notepad");                                                           //窗口标题
     if(!access("content\\temp.dat",0))
     remove("content\\temp.dat");
 
