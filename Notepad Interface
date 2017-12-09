@@ -1,5 +1,4 @@
 #include <stdio.h>
-#include <time.h>
 #include <windows.h>
 #include "FunsForText.h"
 
@@ -271,3 +270,4 @@ int main(void)
 
     return 0;
 }
+
