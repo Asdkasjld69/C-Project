@@ -53,8 +53,8 @@ void removeLine(char route[])                               //按行删除
         fp3 = fopen("content\\notes.dat","ab");
 
     system("cls");
-    if(route == "content\\notes.dat" || route == "content\\bin.dat")
-    showContent("content\\header.dat");
+    if(route != "content\\header.dat")
+        showContent("content\\header.dat");
 
     char a='\0',b='\0';
     int i = 0;
@@ -192,7 +192,8 @@ void insertContent(char route[])
     if(fp==NULL){failReboot();}
     fp2 = fopen("content\\temp.dat","wb");
     system("cls");
-    showContent("content\\header.dat");
+    if(route != "content\\header.dat")
+        showContent("content\\header.dat");
 
     char a='\0',b='\0';
     int i = 0;
@@ -231,11 +232,11 @@ void insertContent(char route[])
         printf("Press any key to continue...");
         getch();
     }
-    else                                                    //删除
+    else
     {
         fp = fopen(route,"rb");
         if(fp==NULL){failReboot();}
-    printf("Now enter the content: ");
+    printf("Now enter the content: ");                      //输入插入内容
     char cont[L];
     gets(cont);
     while(!feof(fp))
@@ -258,10 +259,10 @@ void insertContent(char route[])
                 lt = localtime (&t);
                 fprintf(fp2,"=%d.%02d.%02d_%02d:%02d:%02d=:",lt->tm_year+1900,lt->tm_mon+1,lt->tm_mday,lt->tm_hour,lt->tm_min,lt->tm_sec);
             }
-            fprintf(fp2,"%s",cont);
+            fprintf(fp2,"%s",cont);                         //在完成复制指定行后插入内容
         }
         if(a != EOF)
-            fputc(a,fp2);                                    //将除选定行之外内容复制到临时文件
+            fputc(a,fp2);
 
         if(a=='\n')
             search++;
