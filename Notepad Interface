@@ -99,8 +99,9 @@ void notes()                                            //显示笔记
     showContent("content\\notes.dat");
     printf("\n");
     printf("1------------Add Note\n");                  //添加
-    printf("2------------Delete Note\n");               //按行删除
-    printf("3------------Clear all notes\n");           //清除
+    printf("2------------Insert Note\n");
+    printf("3------------Delete Note\n");               //按行删除
+    printf("4------------Clear all notes\n");           //清除
     printf("0------------Back\n");                      //返回
 
     char c;
@@ -109,8 +110,9 @@ void notes()                                            //显示笔记
     switch(c)
     {
         case '1':addContent("content\\notes.dat");break;    //添加
-        case '2':removeLine("content\\notes.dat");break;    //按行删除
-        case '3':clearContent("content\\notes.dat");break;  //清除
+        case '2':insertContent("content\\notes.dat");break;    //按行删除
+        case '3':removeLine("content\\notes.dat");break;    //按行删除
+        case '4':clearContent("content\\notes.dat");break;  //清除
         case '0':main_menu();break;                         //返回
         default:goto choose;
     }
@@ -146,8 +148,9 @@ void header()                                               //设置大标题
 
     printf("Header Settings\n\n");
     printf("1------------Add Header\n");                    //添加
-    printf("2------------Delete Header\n");                 //按行删除
-    printf("3------------Clear Header\n");                  //清除
+    printf("2------------Insert Header\n");
+    printf("3------------Delete Header\n");                 //按行删除
+    printf("4------------Clear Header\n");                  //清除
     printf("0------------Back\n");                          //返回设置菜单
 
     char c;
@@ -156,8 +159,9 @@ void header()                                               //设置大标题
     switch(c)
     {
         case '1':addContent("content\\header.dat");break;   //增加
-        case '2':removeLine("content\\header.dat");break;   //按行删除
-        case '3':clearContent("content\\header.dat");break; //清除
+        case '2':insertContent("content\\header.dat");break;   //按行删除
+        case '3':removeLine("content\\header.dat");break;   //按行删除
+        case '4':clearContent("content\\header.dat");break; //清除
         case '0':settings();break;                          //返回设置菜单
         default:goto choose;
     }
@@ -238,9 +242,8 @@ void bin()                                              //垃圾箱
     if(fp==NULL){failReboot();}
 
     if(fgetc(fp) == EOF)                                //无内容显示 *空*
-    {
         printf("*Empty*\n");
-    }
+
     showContent("content\\bin.dat");
     printf("\n");
     printf("1------------Recover note\n");
