@@ -14,7 +14,7 @@ void main_menu()                                         //主菜单界面
     if(access("content\\notes.dat",0))
         fp = fopen("content\\notes.dat","wb");
     if(access("content\\bin.dat",0))
-    fp = fopen("content\\bin.dat","wb");
+        fp = fopen("content\\bin.dat","wb");
     if(access("content\\user_config.dat",0))
     {
         fp = fopen("content\\user_config.dat","wb");
@@ -22,7 +22,7 @@ void main_menu()                                         //主菜单界面
     }
     fclose(fp);
 
-    fp = fopen("content\\user_config.dat","rb");   //读取颜色
+    fp = fopen("content\\user_config.dat","rb");        //读取颜色
     if(fp==NULL){failReboot();}
 
     system("cls");
@@ -46,7 +46,7 @@ void main_menu()                                         //主菜单界面
     printf("Main Menu\n\n");
     printf("1------------Check your notes\n");           //查看笔记
     printf("2------------Settings\n");                   //设置
-    printf("3------------Bin(%d)\n",t);
+    printf("3------------Bin(%d)\n",t);                  //回收站(显示回收站内条数)
     printf("0------------Exit\n");                       //退出
 
     fp = fopen("content\\notes.dat","rb");               //检查可用笔记条数
@@ -61,9 +61,9 @@ void main_menu()                                         //主菜单界面
     fclose(fp);
     printf("\nNotes Available:%d",t);
 
-    char userName[N] = {0};                             //获取计算机用户名
+    char userName[N];
     unsigned long tooLong = sizeof(userName);
-    GetUserName(userName, &tooLong);
+    GetUserName(userName, &tooLong);                    //获取计算机用户名
 
     char c;
     choose:
@@ -72,7 +72,7 @@ void main_menu()                                         //主菜单界面
     {
         case '1':notes();break;                         //查看笔记
         case '2':settings();break;                      //设置
-        case '3':bin();break;
+        case '3':bin();break;                           //回收站
         case '0':break;                                 //退出
         default:goto choose;
     }
@@ -99,7 +99,7 @@ void notes()                                            //显示笔记
     showContent("content\\notes.dat");
     printf("\n");
     printf("1------------Add Note\n");                  //添加
-    printf("2------------Insert Note\n");
+    printf("2------------Insert Note\n");               //行后插入笔记
     printf("3------------Delete Note\n");               //按行删除
     printf("4------------Clear all notes\n");           //清除
     printf("0------------Back\n");                      //返回
@@ -110,7 +110,7 @@ void notes()                                            //显示笔记
     switch(c)
     {
         case '1':addContent("content\\notes.dat");break;    //添加
-        case '2':insertContent("content\\notes.dat");break;    //按行删除
+        case '2':insertContent("content\\notes.dat");break; //插入笔记
         case '3':removeLine("content\\notes.dat");break;    //按行删除
         case '4':clearContent("content\\notes.dat");break;  //清除
         case '0':main_menu();break;                         //返回
@@ -148,7 +148,7 @@ void header()                                               //设置大标题
 
     printf("Header Settings\n\n");
     printf("1------------Add Header\n");                    //添加
-    printf("2------------Insert Header\n");
+    printf("2------------Insert Header\n");                 //行后插入
     printf("3------------Delete Header\n");                 //按行删除
     printf("4------------Clear Header\n");                  //清除
     printf("0------------Back\n");                          //返回设置菜单
@@ -196,10 +196,9 @@ void changeColor()                                          //设置背景&文�
     if(((text>='0'&&text<='9')||(text>='a'&&text<='f')||(text>='A'&&text<='F')))    //背景颜色
         add = sprintf(color,"color %c",text);
     else
+
         goto input_First;
-
     printf(": %c\nText ",text);
-
     input_Second:
     bg = getch();
     if(((bg>='0'&&bg<='9')||(bg>='a'&&bg<='f')||(bg>='A'&&bg<='F'))&&bg != text)    //文本颜色(不能与前者相同)
@@ -232,7 +231,7 @@ void changeColor()                                          //设置背景&文�
     settings();
 }
 
-void bin()                                              //垃圾箱
+void bin()                                              //回收站
 {
     system("cls");
     showContent("content\\header.dat");
@@ -265,7 +264,7 @@ void bin()                                              //垃圾箱
 
 int main(void)
 {
-    system("title Simple Notepad");                                                           //窗口标题
+    system("title Simple Notepad");
     if(!access("content\\temp.dat",0))
     remove("content\\temp.dat");
 
