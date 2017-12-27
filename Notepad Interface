@@ -11,8 +11,8 @@ void main_menu()                                         //主菜单界面
     FILE *fp = NULL;
     if(access("content\\header.dat",0))
         fp = fopen("content\\header.dat","wb");
-    if(access("content\\notes.dat",0))
-        fp = fopen("content\\notes.dat","wb");
+    if(access("content\\data.dat",0))
+        fp = fopen("content\\data.dat","wb");
     if(access("content\\bin.dat",0))
     fp = fopen("content\\bin.dat","wb");
     if(access("content\\user_config.dat",0))
@@ -44,12 +44,12 @@ void main_menu()                                         //主菜单界面
 
     showContent("content\\header.dat");                  //显示大标题
     printf("Main Menu\n\n");
-    printf("1------------Check your notes\n");           //查看笔记
+    printf("1------------Logs\n");                       //查看
     printf("2------------Settings\n");                   //设置
     printf("3------------Bin(%d)\n",t);                  //回收站(显示回收站内条数)
     printf("0------------Exit\n");                       //退出
 
-    fp = fopen("content\\notes.dat","rb");               //检查可用笔记条数
+    fp = fopen("content\\data.dat","rb");               //检查可用笔记条数
     a = '\0';
     t = 0;
     while(!feof(fp))
@@ -59,7 +59,7 @@ void main_menu()                                         //主菜单界面
             t++;
     }
     fclose(fp);
-    printf("\nNotes Available:%d",t);
+    printf("\nLogs availabe:%d",t);
 
     char userName[N];
     unsigned long tooLong = sizeof(userName);
@@ -70,7 +70,7 @@ void main_menu()                                         //主菜单界面
     c = getch();
     switch(c)
     {
-        case '1':notes();break;                         //查看笔记
+        case '1':logs();break;                         //查看笔记
         case '2':settings();break;                      //设置
         case '3':bin();break;                           //回收站
         case '0':break;                                 //退出
@@ -84,10 +84,10 @@ void main_menu()                                         //主菜单界面
     exit(0);
 }
 
-void notes()                                            //显示笔记
+void logs()                                            //显示笔记
 {
     FILE *fp = NULL;
-    fp = fopen("content\\notes.dat","rb");
+    fp = fopen("content\\data.dat","rb");
     if(fp==NULL){failReboot();}
     system("cls");
     showContent("content\\header.dat");
@@ -96,13 +96,13 @@ void notes()                                            //显示笔记
         printf("*Empty*\n");
 
     fclose(fp);
-    showContent("content\\notes.dat");
-    printf("\n");
-    printf("1------------Add Note\n");                  //添加
-    printf("2------------Insert Note\n");               //行后插入笔记
-    printf("3------------Delete Note\n");               //按行删除
-    printf("4------------Delete Notes\n");              //按行删除
-    printf("5------------Clear all notes\n");           //清除
+    showContent("content\\data.dat");
+    printf("\nLogs\n\n");
+    printf("1------------Add\n");                  //添加
+    printf("2------------Insert\n");               //行后插入笔记
+    printf("3------------Delete\n");               //按行删除
+    printf("4------------Delete more\n");              //多行删除
+    printf("5------------Clear\n");           //清除
     printf("0------------Back\n");                      //返回
 
     char c;
@@ -110,15 +110,15 @@ void notes()                                            //显示笔记
     c = getch();
     switch(c)
     {
-        case '1':addContent("content\\notes.dat");break;    //添加
-        case '2':insertContent("content\\notes.dat");break; //插入笔记
-        case '3':removeLine("content\\notes.dat");break;    //按行删除
-        case '4':removeLines("content\\notes.dat");break;   //多行删除
-        case '5':clearContent("content\\notes.dat");break;  //清除
+        case '1':addContent("content\\data.dat");break;    //添加
+        case '2':insertContent("content\\data.dat");break; //插入笔记
+        case '3':removeLine("content\\data.dat");break;    //按行删除
+        case '4':removeLines("content\\data.dat");break;   //多行删除
+        case '5':clearContent("content\\data.dat");break;  //清除
         case '0':main_menu();break;                         //返回
         default:goto choose;
     }
-    notes();
+    logs();
 }
 
 void settings()                                             //设置菜单
@@ -149,10 +149,11 @@ void header()                                               //设置大标题
     showContent("content\\header.dat");
 
     printf("Header Settings\n\n");
-    printf("1------------Add Header\n");                    //添加
-    printf("2------------Insert Header\n");                 //行后插入
-    printf("3------------Delete Header\n");                 //按行删除
-    printf("4------------Clear Header\n");                  //清除
+    printf("1------------Add\n");                           //添加
+    printf("2------------Insert\n");                        //行后插入
+    printf("3------------Delete\n");                        //按行删除
+    printf("4------------Delete more\n");                   //多行删除
+    printf("5------------Clear\n");                         //清除
     printf("0------------Back\n");                          //返回设置菜单
 
     char c;
@@ -160,10 +161,11 @@ void header()                                               //设置大标题
     c = getch();
     switch(c)
     {
-        case '1':addContent("content\\header.dat");break;   //增加
-        case '2':insertContent("content\\header.dat");break;   //按行删除
+        case '1':addContent("content\\header.dat");break;   //添加
+        case '2':insertContent("content\\header.dat");break;//插入
         case '3':removeLine("content\\header.dat");break;   //按行删除
-        case '4':clearContent("content\\header.dat");break; //清除
+        case '4':removeLines("content\\header.dat");break;  //多行删除
+        case '5':clearContent("content\\header.dat");break; //清除
         case '0':settings();break;                          //返回设置菜单
         default:goto choose;
     }
@@ -179,6 +181,7 @@ void changeColor()                                          //设置背景&文�
     showContent("content\\header.dat");
 
     char color[20];
+    printf("Color setting\n\n");
     printf("*Background color != Text Color*.\n\n");
     printf("0 = Black            8 = Grey\n");
     printf("1 = Blue             9 = Light Blue\n");
@@ -246,9 +249,9 @@ void bin()                                              //回收站
         printf("*Empty*\n");
 
     showContent("content\\bin.dat");
-    printf("\n");
-    printf("1------------Recover note\n");
-    printf("2------------Recover notes\n");
+    printf("\nBin\n\n");
+    printf("1------------Recover\n");
+    printf("2------------Recover more\n");
     printf("3------------Clear\n");
     printf("0------------Back\n");
 
@@ -268,7 +271,7 @@ void bin()                                              //回收站
 
 int main(void)
 {
-    system("title Simple Notepad");
+    system("title The Log Keeper");
     if(!access("content\\temp.dat",0))
     remove("content\\temp.dat");
 
