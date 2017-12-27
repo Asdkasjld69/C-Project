@@ -28,7 +28,7 @@ void addContent(char route[])                           //为指定文本文件�
 
     char cont[L];
     gets(cont);
-    if(route == "content\\notes.dat")
+    if(route == "content\\data.dat")
     {
         time_t t;
         struct tm *lt;
@@ -47,13 +47,13 @@ void removeLines(char route[])                               //按行删除
     if(fp==NULL){failReboot();}
     FILE *fp2 = fopen("content\\temp.dat","wb");            //生成临时文件
 
-    if(route == "content\\notes.dat")
+    if(route == "content\\data.dat")
         fp3 = fopen("content\\bin.dat","ab");
     else
-        fp3 = fopen("content\\notes.dat","ab");
+        fp3 = fopen("content\\data.dat","ab");
 
     system("cls");
-    if(route == "content\\notes.dat" || route == "content\\bin.dat")
+    if(route == "content\\data.dat" || route == "content\\bin.dat")
     showContent("content\\header.dat");
 
     char a='\0',b='\0';
@@ -66,7 +66,7 @@ void removeLines(char route[])                               //按行删除
             break;
         if(t==1)
         {
-            if(route == "content\\notes.dat" || route == "content\\bin.dat")
+            if(route == "content\\data.dat" || route == "content\\bin.dat")
                 printf("%03d ",i+1);
             else
                 printf("%02d ",i+1);
@@ -172,13 +172,13 @@ void removeLine(char route[])                               //按行删除
     if(fp==NULL){failReboot();}
     FILE *fp2 = fopen("content\\temp.dat","wb");            //生成临时文件
 
-    if(route == "content\\notes.dat")
+    if(route == "content\\data.dat")
         fp3 = fopen("content\\bin.dat","ab");
     else
-        fp3 = fopen("content\\notes.dat","ab");
+        fp3 = fopen("content\\data.dat","ab");
 
     system("cls");
-    if(route == "content\\notes.dat" || route == "content\\bin.dat")
+    if(route == "content\\data.dat" || route == "content\\bin.dat")
     showContent("content\\header.dat");
 
     char a='\0',b='\0';
@@ -191,7 +191,7 @@ void removeLine(char route[])                               //按行删除
             break;
         if(t==1)
         {
-            if(route == "content\\notes.dat" || route == "content\\bin.dat")
+            if(route == "content\\data.dat" || route == "content\\bin.dat")
                 printf("%03d ",i+1);
             else
                 printf("%02d ",i+1);
@@ -235,6 +235,7 @@ void removeLine(char route[])                               //按行删除
         {
             if(route != "content\\header.dat")
                 fputc(a,fp3);
+
             while(a != '\n')
             {
                 a = fgetc(fp);
@@ -280,7 +281,7 @@ void clearContent(char route[])                             //清空
     if(fp==NULL){failReboot();}
 
     system("cls");
-    if(route == "content\\notes.dat")
+    if(route == "content\\data.dat")
         fp2 = fopen("content\\bin.dat","ab");
 
     showContent("content\\header.dat");
@@ -328,7 +329,7 @@ void insertContent(char route[])
             break;
         if(t==1)
         {
-            if(route == "content\\notes.dat" || route == "content\\bin.dat")
+            if(route == "content\\data.dat" || route == "content\\bin.dat")
                 printf("%03d ",i+1);
             else
                 printf("%02d ",i+1);
@@ -374,7 +375,7 @@ void insertContent(char route[])
                 fputc(a,fp2);
             }
             fputc('\n',fp2);
-            if(route == "content\\notes.dat")
+            if(route == "content\\data.dat")
             {
                 time_t t;
                 struct tm *lt;
