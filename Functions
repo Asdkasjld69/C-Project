@@ -152,7 +152,7 @@ void removeLines(char route[])                               //按行删除
             b = fgetc(fp2);
             if(b == '\n')
             {
-                if((search >= choose1 && search < choose2) || (choose1 == choose2 && search == choose1))
+                if((search > choose1 && search < choose2) || (choose1 == choose2 && search == choose1))
                     b = fgetc(fp2);
                 search++;
             }
