@@ -124,14 +124,22 @@ void removeLines(char route[])                               //按行删除
         if(search == choose1)
         {
             if(route != "content\\header.dat")
-                fputc(a,fp3);
-            while(search <= choose2 || a != '\n')
+            fputc(a,fp3);
+            while(1)
             {
                 a = fgetc(fp);
                 if(route != "content\\header.dat")
                     fputc(a,fp3);
-                if(a=='\n')
+                if(a == '\n')
                     search++;
+                if(search > choose2)
+                {
+                    if(a == '\n')
+                    {
+                        a = fgetc(fp);
+                        break;
+                    }
+                }
             }
         }
         if(a != EOF)
@@ -146,16 +154,9 @@ void removeLines(char route[])                               //按行删除
         fp = fopen(route,"wb");                             //清空原文件并将临时文件内容写进原文件
         fp2 = fopen("content\\temp.dat","rb");
         if(fp2==NULL){failReboot();}
-        search = 1;
         while(!feof(fp2))
         {
             b = fgetc(fp2);
-            if(b == '\n')
-            {
-                if((search > choose1 && search < choose2) || (choose1 == choose2 && search == choose1))
-                    b = fgetc(fp2);
-                search++;
-            }
             if(b != EOF)
                 fputc(b,fp);
         }
@@ -374,7 +375,6 @@ void insertContent(char route[])
                 a = fgetc(fp);
                 fputc(a,fp2);
             }
-            fputc('\n',fp2);
             if(route == "content\\data.dat")
             {
                 time_t t;
@@ -401,12 +401,6 @@ void insertContent(char route[])
         while(!feof(fp2))
         {
             b = fgetc(fp2);
-            if(b == '\n')
-            {
-                if(search == choose)
-                    b = fgetc(fp2);
-                search++;
-            }
             if(b != EOF)
                 fputc(b,fp);
         }
