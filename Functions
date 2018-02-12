@@ -318,7 +318,8 @@ void insertContent(char route[])
     if(fp==NULL){failReboot();}
     fp2 = fopen("content\\temp.dat","wb");
     system("cls");
-    showContent("content\\header.dat");
+    if(route == "content\\data.dat")
+        showContent("content\\header.dat");
 
     char a='\0',b='\0';
     int i = 0;
