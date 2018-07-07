@@ -24,8 +24,7 @@ void addContent(char route[])                           //为指定文本文件增添内容
     FILE *fp = NULL;
     fp = fopen(route,"ab");
     system("cls");
-    showContent("content\\header.dat");
-    showContent("content\\data.dat");
+    showContent(route);
 
     char cont[L];
     gets(cont);
